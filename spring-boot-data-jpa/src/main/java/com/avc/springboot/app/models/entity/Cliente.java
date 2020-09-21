@@ -8,9 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="clientes")
@@ -22,38 +28,31 @@ public class Cliente implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column
+	//@Column(nullable=false)
+	@NotEmpty
 	private String nombre;
 	
-	@Column
+	//@Column
+	@NotEmpty
 	private String apellidos;
 	
-	@Column
+	//@Column
+	@NotEmpty
+	@Email
 	private String email;
 	
+	@NotNull
 	@Column(name="create_at")
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createAt;
-
-	public Cliente() {
-
-	}
-
-	public Cliente(Long id, String nombre, String apellidos, String email, Date createAt) {
-		this.id = id;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.email = email;
-		this.createAt = createAt;
-	}
 	
-	public Cliente(String nombre, String apellidos, String email, Date createAt) {
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.email = email;
-		this.createAt = createAt;
-	}
-
+	/*
+	@PrePersist
+	public void prePersist() {
+		createAt = new Date();
+	}*/
+	
 	public Long getId() {
 		return id;
 	}
